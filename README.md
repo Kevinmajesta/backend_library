@@ -87,11 +87,6 @@ migrate -path database/migration/ -database "migrate -path migrations -database 
 docker-compose up -d
 ```
 
-```sh
-https://hub.docker.com/r/kevinivano/bookmanagement
-for the collect the project link that has been built and saved to the registry container hub.docker.com
-```
-
 6. Run the application
 
 ```sh
