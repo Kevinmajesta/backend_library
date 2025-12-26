@@ -36,5 +36,5 @@ func (h *UserHandler) CreateUser(c echo.Context) error {
 		return c.JSON(http.StatusBadRequest, response.ErrorResponse(http.StatusBadRequest, err.Error()))
 	}
 
-	return c.JSON(http.StatusOK, response.SuccessResponse(http.StatusOK, "Successfully created a new user, the email has been sent", user))
+	return c.JSON(http.StatusOK, response.SuccessResponse(http.StatusOK, "Successfully created a new user", user))
 }

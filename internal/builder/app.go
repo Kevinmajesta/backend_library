@@ -15,7 +15,15 @@ func BuildPublicRoutes(db *gorm.DB) []*route.Route {
 	userService := service.NewUserService(userRepository)
 	userHandler := handler.NewUserHandler(userService)
 
-	return router.PublicRoutes(userHandler)
+	bookRepository := repository.NewBookRepository(db)
+	bookService := service.NewBookService(bookRepository)
+	bookHandler := handler.NewBookHandler(bookService)
+
+	borrowRepository := repository.NewBorrowRepository(db)
+	borrowService := service.NewBorrowService(db, bookRepository, borrowRepository)
+	borrowHandler := handler.NewBorrowHandler(borrowService)
+
+	return router.PublicRoutes(userHandler, bookHandler, borrowHandler)
 }
 
 func BuildPrivateRoutes(db *gorm.DB) []*route.Route {
