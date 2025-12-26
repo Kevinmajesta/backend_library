@@ -1,0 +1,27 @@
+version: '3.8'
+
+services:
+  myapp:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "8080:8080"
+    depends_on:
+      - db
+    environment:
+      ENV: "dev"
+      PORT: "8080"
+      POSTGRES_HOST: "localhost"        
+      POSTGRES_PORT: "5432"
+      POSTGRES_USER: "library_c"
+      POSTGRES_PASSWORD: "library_c"
+      POSTGRES_DATABASE: "library_c"
+  db:
+    image: postgres:latest
+    environment:
+      - POSTGRES_USER=library_c
+      - POSTGRES_PASSWORD=library_c
+      - POSTGRES_DB=library_c
+    ports:
+      - "5432:5432"
