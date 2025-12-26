@@ -34,7 +34,8 @@ func (h *BorrowHandler) BorrowBook(c echo.Context) error {
 
 	borrow, err := h.borrowService.BorrowBook(input.UserID, input.BookID)
 	if err != nil {
-
+		//saya pakai custom error response sesuai permintaan Ziyadbooks
+		//saya pakai 3, ada 001 untuk stok habis, 002 untuk kuota penuh, 999 untuk system error
 		if errors.Is(err, service.ErrBookOutOfStock) {
 			return c.JSON(http.StatusBadRequest, response.CustomErrorResponse{
 				Message:        "Stok buku habis",
@@ -42,8 +43,13 @@ func (h *BorrowHandler) BorrowBook(c echo.Context) error {
 				TraceID:        response.GenerateTraceID(12),
 			})
 		}
-
-		// system error
+		if errors.Is(err, service.ErrBorrowQuotaExceeded) {
+			return c.JSON(http.StatusBadRequest, response.CustomErrorResponse{
+				Message:        "Kuota peminjaman sudah penuh",
+				ZiyadErrorCode: "ZYD-ERR-002",
+				TraceID:        response.GenerateTraceID(12),
+			})
+		}
 		traceID := response.GenerateTraceID(12)
 		return c.JSON(http.StatusInternalServerError, response.CustomErrorResponse{
 			Message:        "Terjadi kesalahan pada sistem",
